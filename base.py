@@ -1,45 +1,14 @@
-import peliculasCrud
+import peliculasCrud, funciones
 
-# Función para imprimir matrices
-def imprimir_matriz(titulo, matriz):
-    print(f"{titulo.upper()}")
 
-    # Verifica si la matriz esta vacia antes de imprimir
-    if not matriz:
-        print("La matriz está vacía.")
-    else:
-        # Calcular el ancho máximo de cada columna para un formato prolijo
-        anchos_columna = []
-        for item in matriz[0]:
-            anchos_columna.append(len(str(item)))
-        for fila in matriz:
-            for i, item in enumerate(fila):
-                if len(str(item)) > anchos_columna[i]:
-                    anchos_columna[i] = len(str(item))
 
-        # Imprimir encabezado
-        encabezado = ""
-        for i, item in enumerate(matriz[0]):
-            encabezado += str(item).ljust(anchos_columna[i] + 2) + "|"
-        print(encabezado)
-        print("-" * len(encabezado))
-
-        # Imprimir filas de datos
-        for fila in matriz[1:]:
-            linea = ""
-            for i, item in enumerate(fila):
-                linea += str(item).ljust(anchos_columna[i] + 2) + "|"
-            print(linea)
-
-        print("")
-        print("")
 
 # Impresión de matrices
 def imprimirMatrices():
-    imprimir_matriz("Matriz de Películas", peliculas_matriz)
-    imprimir_matriz("Matriz de Clientes", clientes_matriz)
-    imprimir_matriz("Matriz de Funciones", funciones_matriz)
-    imprimir_matriz("Matriz de Reservas", reservas_matriz)
+    funciones.imprimir_matriz("Matriz de Películas", peliculas_matriz)
+    funciones.imprimir_matriz("Matriz de Clientes", clientes_matriz)
+    funciones.imprimir_matriz("Matriz de Funciones", funciones_matriz)
+    funciones.imprimir_matriz("Matriz de Reservas", reservas_matriz)
 
 def imprimirMenu():
     opcion = 0
@@ -67,7 +36,17 @@ def imprimirMenu():
                         case 'a':
                             peliculasCrud.agregarPelicula(peliculas_matriz)
                         case 'b':
-                            peliculasCrud.leerPelicula(peliculas_matriz)
+                            print("Opciones de Consulta:")
+                            print("1. Buscar por ID")
+                            print("2. Buscar por Nombre")
+                            metodo_consulta = input("Seleccione una opción (1-2): ")
+                            match metodo_consulta:
+                                case '1':
+                                    peliculasCrud.leerPeliculaPorId(peliculas_matriz)
+                                case '2':
+                                    peliculasCrud.leerPeliculaPorNombre(peliculas_matriz)
+                                case _:
+                                    print("Opción inválida. Volviendo al menú CRUD de Películas.")
                         case 'c':
                             peliculasCrud.actualizarPelicula(peliculas_matriz)
                         case 'd':
@@ -127,6 +106,15 @@ reservas_matriz = [
     [1003, 502, 104, 'H9', '2025-08-12'],
     [1004, 501, 103, 'G1', '2025-08-13'],
     [1005, 505, 105, 'D7, D8', '2025-08-14']
+]
+
+# 5. Matriz de Salas
+salas_matriz = [
+    ['ID_Sala', 'Nombre_Sala', 'Capacidad', 'Tipo'],
+    [1, 'Sala 1', 100, '2D'],
+    [2, 'Sala 2', 80, '3D'],
+    [3, 'Sala 3', 50, 'IMAX'],
+    [4, 'Sala 4', 120, '4DX']
 ]
 
 imprimirMenu()

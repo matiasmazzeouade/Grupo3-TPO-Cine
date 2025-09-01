@@ -4,7 +4,7 @@
 #Funcion para agregar película (Crud)
 def agregarPelicula(peliculas_matriz):
     print("Agregar Nueva Película:")
-    nuevo_id = peliculas_matriz[-1][0] + 1
+    nuevo_id = peliculas_matriz[-1][0] + 1 if len(peliculas_matriz) > 1 else 1
     titulo = input("Ingrese Título: ")
     genero = input("Ingrese Género: ")
     duracion = int(input("Ingrese Duración en Minutos: "))
@@ -15,7 +15,7 @@ def agregarPelicula(peliculas_matriz):
 #--------------------------------------------------
 
 #Funcion para leer películas (cRud)
-def leerPelicula(peliculas_matriz):
+def leerPeliculaPorId(peliculas_matriz):
     print("Consultar Película por ID:")
     id_buscar = int(input("Ingrese ID de la Película a Consultar: "))
     seEncontro = False
@@ -27,6 +27,20 @@ def leerPelicula(peliculas_matriz):
     if not seEncontro:
         print(f"No se encontró ninguna película con ID {id_buscar}.")
 
+
+def leerPeliculaPorNombre(peliculas_matriz):
+    print("Buscar Película por Nombre:")
+    nombre_buscar = input("Ingrese el Nombre o parte del Nombre de la Película: ").lower()
+    peliculas_encontradas = []
+    for pelicula in peliculas_matriz[1:]:
+        if nombre_buscar in pelicula[1].lower():
+            peliculas_encontradas.append(pelicula)
+    if peliculas_encontradas:
+        print("Películas Encontradas:")
+        for pelicula in peliculas_encontradas:
+            print(f"ID: {pelicula[0]}, Título: {pelicula[1]}, Género: {pelicula[2]}, Duración: {pelicula[3]} min, Clasificación: {pelicula[4]}")
+    else:
+        print(f"No se encontraron películas que coincidan con '{nombre_buscar}'.")
 #--------------------------------------------------
 
 #Funcion para actualizar película (crUd)
