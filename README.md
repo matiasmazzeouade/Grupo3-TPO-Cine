@@ -40,10 +40,10 @@ o	listado de géneros de películas y tipos de salas.
 Proceso de Desarrollo
 
 El recorrido fue así:
-1.	Arranque con matrices: de entrada la información se guardaba en matrices, como primera práctica para ordenar datos.
+1.	Arrancamos con las matrices: de entrada la información se guardaba en matrices, como primera práctica para ordenar datos.
 2.	CRUDs básicos: después armamos las operaciones para cargar, consultar, modificar y borrar, pero ya pasando a listas de diccionarios porque era más cómodo y claro.
 3.	Estadísticas: con las estructuras listas, sumamos funciones para calcular datos y hacer reportes.
-4.	Mejoras al código:
+4.	Mejoras al código luego de revisiones:
 o	sacamos break que cortaban de más, y lo reemplazamos con banderas de control,
 o	usamos diccionarios para manejar datos con claves,
 o	metimos regex para validar emails y teléfonos,
