@@ -53,8 +53,11 @@ def sala_ocupada_manual(id_sala, horario_str, fecha, id_pelicula, peliculas_list
 def agregarFuncion(funciones_lista, peliculas_lista, salas_lista):
     print("Agregar Nueva Función:")
     nuevo_id = max([f['ID_Funcion'] for f in funciones_lista]) + 1 if funciones_lista else 501
-    
-    pelicula_id = int(input("Ingrese ID de la Película: "))
+    try:
+        pelicula_id = int(input("Ingrese ID de la Película: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     pelicula_existe = False
     for p in peliculas_lista:
         if p['ID_Pelicula'] == pelicula_id:
@@ -64,7 +67,11 @@ def agregarFuncion(funciones_lista, peliculas_lista, salas_lista):
         print(f"No existe ninguna película con ID {pelicula_id}.")
         return
     
-    sala_id = int(input("Ingrese ID de Sala: "))
+    try:
+        sala_id = int(input("Ingrese ID de Sala: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     sala_existe = False
     for s in salas_lista:
         if s['ID_Sala'] == sala_id:
@@ -99,7 +106,7 @@ def agregarFuncion(funciones_lista, peliculas_lista, salas_lista):
     }
     funciones_lista.append(nueva_funcion)
     print(f"Función para la película ID {pelicula_id} en la sala {sala_id} agregada.")
-
+#falta
 def leerFuncionPorId(funciones_lista):
     print("Consultar Función por ID:")
     id_buscar = int(input("Ingrese ID de la Función a Consultar: "))
@@ -134,8 +141,11 @@ def leerFuncionesPorFecha(funciones_lista):
 
 def actualizarFuncionPorId(funciones_lista, peliculas_lista, salas_lista):
     print("Actualizar Función por ID:")
-    id_buscar = int(input("Ingrese ID de la Función a Actualizar: "))
-    
+    try:
+        id_buscar = int(input("Ingrese ID de la Función a Actualizar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     funcion_a_actualizar = None
     for f in funciones_lista:
         if f['ID_Funcion'] == id_buscar:
@@ -157,8 +167,11 @@ def actualizarFuncionPorId(funciones_lista, peliculas_lista, salas_lista):
 
 def eliminarFuncion(funciones_lista):
     print("Eliminar Función Existente:")
-    id_buscar = int(input("Ingrese ID de la Función a Eliminar: "))
-    
+    try:
+        id_buscar = int(input("Ingrese ID de la Función a Eliminar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return 
     indice_a_eliminar = -1
     i = 0
     while i < len(funciones_lista) and indice_a_eliminar == -1:

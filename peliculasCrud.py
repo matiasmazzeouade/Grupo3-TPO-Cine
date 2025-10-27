@@ -10,6 +10,7 @@ def agregarPelicula(peliculas_lista):
     nuevo_id = max([p['ID_Pelicula'] for p in peliculas_lista]) + 1 if peliculas_lista else 1
     titulo = input("Ingrese Título: ")
     genero = input("Ingrese Género: ")
+    #falta
     duracion = int(input("Ingrese Duración en Minutos: "))
     clasificacion = input("Ingrese Clasificación: ")
     
@@ -25,7 +26,11 @@ def agregarPelicula(peliculas_lista):
 
 def leerPeliculaPorId(peliculas_lista):
     print("Consultar Película por ID:")
-    id_buscar = int(input("Ingrese ID de la Película a Consultar: "))
+    try:
+        id_buscar = int(input("Ingrese ID de la Película a Consultar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     pelicula_encontrada = None
     i = 0
@@ -53,7 +58,11 @@ def leerPeliculaPorNombre(peliculas_lista):
 
 def actualizarPelicula(peliculas_lista):
     print("Actualizar Película Existente:")
-    id_buscar = int(input("Ingrese ID de la Película a Actualizar: "))
+    try:
+        id_buscar = int(input("Ingrese ID de la Película a Actualizar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     pelicula_a_actualizar = None
     i = 0
@@ -74,6 +83,7 @@ def actualizarPelicula(peliculas_lista):
         if nuevo_genero:
             pelicula_a_actualizar['Genero'] = nuevo_genero
         if nuevo_duracion:
+            #falta
             pelicula_a_actualizar['Duracion_min'] = int(nuevo_duracion)
         if nuevo_clasificacion:
             pelicula_a_actualizar['Clasificacion'] = nuevo_clasificacion
@@ -84,7 +94,11 @@ def actualizarPelicula(peliculas_lista):
 
 def eliminarPelicula(peliculas_lista):
     print("Eliminar Película Existente:")
-    id_buscar = int(input("Ingrese ID de la Película a Eliminar: "))
+    try:
+        id_buscar = int(input("Ingrese ID de la Película a Eliminar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     indice_a_eliminar = -1
     i = 0
@@ -125,3 +139,18 @@ def obtener_info_basica_pelicula(peliculas_lista, id_buscar):
         return info
     else:
         return None
+    
+# SLICING 2 [:n] FALTA PONER EN MENU CON 
+#try:
+#    leerPrimerasNPeliculas(peliculas, cantidad)
+#except ValueError as e:
+#    print(e)
+
+
+def leerPrimerasNPeliculas(peliculas_lista, n):
+    if len(peliculas_lista)<n:
+        raise ValueError("No hay suficientes peliculas para mostrar.")
+    print(f"Primeras {n} Peliculas Agregadas:")
+    primeras_n_peliculas = peliculas_lista[:n]
+    for pelicula in primeras_n_peliculas:
+        print(f"ID: {pelicula['ID_Pelicula']}, Título: {pelicula['Titulo']}, Género: {pelicula['Genero']}, Duración: {pelicula['Duracion_min']} min, Clasificación: {pelicula['Clasificacion']}")

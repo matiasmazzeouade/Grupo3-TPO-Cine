@@ -6,6 +6,7 @@ def agregarSala(salas_lista):
     print("Agregar Nueva Sala:")
     nuevo_id = max([s['ID_Sala'] for s in salas_lista]) + 1 if salas_lista else 1
     nombre_sala = input("Ingrese Nombre de la Sala (ej: Sala 5): ")
+    #falta
     capacidad = int(input("Ingrese la Capacidad de la sala: "))
     tipo = input("Ingrese el Tipo de sala (ej: 2D, 3D, IMAX): ")
     
@@ -20,6 +21,7 @@ def agregarSala(salas_lista):
 
 def leerSalaPorId(salas_lista):
     print("Consultar Sala por ID:")
+    #falta
     id_buscar = int(input("Ingrese ID de la Sala a Consultar: "))
     
     sala_encontrada = None
@@ -35,6 +37,7 @@ def leerSalaPorId(salas_lista):
 
 def actualizarSala(salas_lista):
     print("Actualizar Sala Existente:")
+    #falta
     id_buscar = int(input("Ingrese ID de la Sala a Actualizar: "))
     
     sala_a_actualizar = None
@@ -50,6 +53,7 @@ def actualizarSala(salas_lista):
         nuevo_tipo = input("Ingrese Nuevo Tipo (dejar en blanco para no cambiar): ")
         
         if nuevo_nombre: sala_a_actualizar['Nombre_Sala'] = nuevo_nombre
+        #falta
         if nueva_capacidad: sala_a_actualizar['Capacidad'] = int(nueva_capacidad)
         if nuevo_tipo: sala_a_actualizar['Tipo'] = nuevo_tipo
             
@@ -59,6 +63,7 @@ def actualizarSala(salas_lista):
 
 def eliminarSala(salas_lista, funciones_lista):
     print("Eliminar Sala Existente:")
+    #falta
     id_buscar = int(input("Ingrese ID de la Sala a Eliminar: "))
     
     sala_en_uso = False

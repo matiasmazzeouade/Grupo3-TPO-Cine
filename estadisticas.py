@@ -1,3 +1,4 @@
+from functools import reduce
 #--------------------------------------------------
 # FUNCIONES DE ESTADISTICAS (CON DICCIONARIOS)
 #--------------------------------------------------
@@ -58,21 +59,40 @@ def peliculas_mas_reservadas(reservas_lista, funciones_lista, peliculas_lista):
     print("-" * 40)
 
 
-def analisis_edad_clientes(clientes_lista):
+#falta implementar en menu
+def analisis_edad_clientes(clientes_lista): 
     print("--- Análisis de Edad de los Clientes ---")
-    if not clientes_lista or 'Edad' not in clientes_lista[0]:
-        print("No hay suficientes datos de clientes o falta la columna 'Edad'.")
-        return
 
-    edades = [cliente['Edad'] for cliente in clientes_lista]
+    try:
+        #Forzamos Index error ante lista vacia
+        if not clientes_lista:
+            raise IndexError("La lista de clientes está vacía.")
+
+        #Forzamos KeyError, si falta alguna 'Edad' en los diccionarios
+        edades = []
+        for cliente in clientes_lista:
+            if 'Edad' not in cliente:
+                raise KeyError("Falta la 'Edad' en un cliente.")
+            edades.append(cliente['Edad'])
+
+        # Cálculos de estadística
+        min_edad = min(edades)
+        max_edad = max(edades)
+        total_edades = reduce(lambda totalTemp, edad: totalTemp + edad, edades, 0)
+        avg_edad = total_edades / len(edades)
+
+        # Resultados
+        print(f"Edad Mínima de los clientes: {min_edad} años.")
+        print(f"Edad Máxima de los clientes: {max_edad} años.")
+        print(f"Edad Promedio de los clientes: {avg_edad:.2f} años.")
     
-    min_edad = min(edades)
-    max_edad = max(edades)
-    avg_edad = sum(edades) / len(edades)
+    except IndexError as e:
+        print(f"Error: {e}")
+    except KeyError as e:
+        print(f"Error: {e}")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado: {e}")
     
-    print(f"Edad Mínima de los clientes: {min_edad} años.")
-    print(f"Edad Máxima de los clientes: {max_edad} años.")
-    print(f"Edad Promedio de los clientes: {avg_edad:.2f} años.")
     print("-" * 40)
 
 def mostrar_categorias_unicas(peliculas_lista, salas_lista):
@@ -95,6 +115,12 @@ def mostrar_categorias_unicas(peliculas_lista, salas_lista):
             print(f"- {tipo}")
             
     print("-" * 40)
+#falta implementar en menu
+def resumen_clientes_mayores(clientes_lista):
+    print("\n--- Clientes Mayores de 30 años ---")
+    mayores_30 = list(filter(lambda clientes: clientes['Edad'] > 30, clientes_lista)) #USO DE FILTER PARA OBTENER CLIENTES MAYORES A 30 AÑOS
+    for cliente in mayores_30:
+        print(f"{cliente['Nombre']} {cliente['Apellido']} - {cliente['Edad']} años")
 
 def mostrar_estadisticas(peliculas_lista, clientes_lista, funciones_lista, reservas_lista, salas_lista):
     print("\n--- MENÚ DE ESTADÍSTICAS ---")

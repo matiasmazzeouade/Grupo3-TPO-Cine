@@ -87,7 +87,11 @@ def imprimirMenu():
         print("5. Gestión de Salas")
         print("6. Gestión de Reservas")
         print("7. Ver Estadísticas")
-        opcion = int(input("Seleccione una opción (1-7) o '-1' para salir: "))
+        try:
+            opcion = int(input("Seleccione una opción (1-7) o '-1' para salir: "))
+        except ValueError:
+            print("Error. debe ingresar un numero.")
+            continue
         
         if opcion == 1:
             imprimirListas()

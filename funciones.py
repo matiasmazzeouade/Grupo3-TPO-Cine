@@ -23,3 +23,4 @@ def imprimir_lista_diccionarios(titulo, lista_de_diccionarios):
         print(row_line)
 
     print("-" * len(header_line))
+

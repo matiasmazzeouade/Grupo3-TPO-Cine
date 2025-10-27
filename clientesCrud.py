@@ -26,8 +26,14 @@ def agregarCliente(clientes_lista):
             break 
         else:
             print("Error: El teléfono debe contener solo números. Inténtelo de nuevo.")
-            
-    edad = int(input("Ingrese Edad: "))
+    try:       
+        edad = int(input("Ingrese Edad: "))
+        if edad < 0:
+            print("Error: La edad no puede ser negativa. Volviendo al menú principal.")
+            return
+    except ValueError:
+        print("Error: La edad debe ser un número entero. Volviendo al menú principal.")
+        return
     
     nuevo_cliente = {
         'ID_Cliente': nuevo_id,
@@ -42,8 +48,11 @@ def agregarCliente(clientes_lista):
 
 def leerClientePorId(clientes_lista):
     print("Consultar cliente por ID:")
-    id_buscar = int(input("Ingrese ID del cliente a consultar: "))
-    
+    try:
+        id_buscar = int(input("Ingrese ID del cliente a consultar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     cliente_encontrado = ""
     i = 0
     while i < len(clientes_lista) and cliente_encontrado is "":
@@ -76,7 +85,11 @@ def leerClientePorNombre(clientes_lista):
 
 def actualizarClientePorId(clientes_lista):
     print("Actualizar Cliente Existente por ID:")
-    id_buscar = int(input("Ingrese ID del Cliente a Actualizar: "))
+    try:
+        id_buscar = int(input("Ingrese ID del Cliente a Actualizar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     cliente_a_actualizar = None
     i = 0
@@ -103,8 +116,11 @@ def actualizarClientePorId(clientes_lista):
 
 def eliminarCliente(clientes_lista):
     print("Eliminar Cliente Existente:")
-    id_buscar = int(input("Ingrese ID del Cliente a Eliminar: "))
-    
+    try:
+        id_buscar = int(input("Ingrese ID del Cliente a Eliminar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     indice_a_eliminar = -1
     i = 0
     while i < len(clientes_lista) and indice_a_eliminar == -1:
@@ -122,3 +138,17 @@ def eliminarCliente(clientes_lista):
             print("Eliminación cancelada.")
     else:
         print(f"No se encontró ningún cliente con ID {id_buscar}.")
+
+# SLICING 2 [-2:] FALTA PONER EN MENU CON 
+#try:
+#    leerUltimosDosClientes(clientes        )
+#except ValueError as e:
+#    print(e)
+
+def leerUltimosDosClientes(clientes_lista):
+    if len(clientes_lista)<2:
+         raise ValueError("No hay suficientes clientes para mostrar.")
+    print("Últimos Dos Clientes Agregados:")
+    ultimos_dos = clientes_lista[-2:]
+    for cliente in ultimos_dos:
+        print(f"ID: {cliente['ID_Cliente']}, Nombre: {cliente['Nombre']}, Apellido: {cliente['Apellido']}, Email: {cliente['Email']}, Teléfono: {cliente['Telefono']}")
