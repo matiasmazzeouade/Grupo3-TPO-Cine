@@ -1,0 +1,22 @@
+[
+    {"ID_Pelicula": 1, "Titulo": "El Origen", "Genero": "Ciencia Ficción", "Duracion_min": 148, "Clasificacion": "+13"},
+    {"ID_Pelicula": 2, "Titulo": "Parasitos", "Genero": "Suspenso", "Duracion_min": 132, "Clasificacion": "+16"},
+    {"ID_Pelicula": 3, "Titulo": "Interestelar", "Genero": "Ciencia Ficción", "Duracion_min": 169, "Clasificacion": "+13"},
+    {"ID_Pelicula": 4, "Titulo": "Mi Villano Favorito", "Genero": "Animación", "Duracion_min": 95, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 5, "Titulo": "La La Land", "Genero": "Musical", "Duracion_min": 128, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 6, "Titulo": "Avengers: Endgame", "Genero": "Acción", "Duracion_min": 181, "Clasificacion": "+13"},
+    {"ID_Pelicula": 7, "Titulo": "Titanic", "Genero": "Drama", "Duracion_min": 195, "Clasificacion": "+13"},
+    {"ID_Pelicula": 8, "Titulo": "Toy Story", "Genero": "Animación", "Duracion_min": 81, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 9, "Titulo": "Matrix", "Genero": "Ciencia Ficción", "Duracion_min": 136, "Clasificacion": "+16"},
+    {"ID_Pelicula": 10, "Titulo": "Joker", "Genero": "Drama", "Duracion_min": 122, "Clasificacion": "+16"},
+    {"ID_Pelicula": 11, "Titulo": "Gladiador", "Genero": "Acción", "Duracion_min": 155, "Clasificacion": "+16"},
+    {"ID_Pelicula": 12, "Titulo": "Coco", "Genero": "Animación", "Duracion_min": 105, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 13, "Titulo": "Frozen", "Genero": "Animación", "Duracion_min": 102, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 14, "Titulo": "El Padrino", "Genero": "Drama", "Duracion_min": 175, "Clasificacion": "+16"},
+    {"ID_Pelicula": 15, "Titulo": "Duna", "Genero": "Ciencia Ficción", "Duracion_min": 155, "Clasificacion": "+13"},
+    {"ID_Pelicula": 16, "Titulo": "Shrek", "Genero": "Animación", "Duracion_min": 90, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 17, "Titulo": "Los Increíbles", "Genero": "Animación", "Duracion_min": 115, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 18, "Titulo": "Harry Potter y la Piedra Filosofal", "Genero": "Fantasía", "Duracion_min": 152, "Clasificacion": "ATP"},
+    {"ID_Pelicula": 19, "Titulo": "Avatar", "Genero": "Ciencia Ficción", "Duracion_min": 162, "Clasificacion": "+13"},
+    {"ID_Pelicula": 20, "Titulo": "Black Panther", "Genero": "Acción", "Duracion_min": 134, "Clasificacion": "+13"}
+]

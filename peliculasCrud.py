@@ -1,5 +1,5 @@
 #--------------------------------------------------
-#Funcion para agregar película (Crud)
+# Funcion para agregar película (Crud)
 #--------------------------------------------------
 # FUNCIONES CRUD PARA PELICULAS (CON DICCIONARIOS)
 #--------------------------------------------------
@@ -10,8 +10,16 @@ def agregarPelicula(peliculas_lista):
     nuevo_id = max([p['ID_Pelicula'] for p in peliculas_lista]) + 1 if peliculas_lista else 1
     titulo = input("Ingrese Título: ")
     genero = input("Ingrese Género: ")
-    #falta
-    duracion = int(input("Ingrese Duración en Minutos: "))
+    
+    try:
+        duracion = int(input("Ingrese Duración en Minutos: "))
+        if duracion <= 0:
+            print("Error: La duración debe ser un número positivo.")
+            return
+    except ValueError:
+        print("Error: La duración debe ser un número entero.")
+        return
+
     clasificacion = input("Ingrese Clasificación: ")
     
     nueva_pelicula = {
@@ -24,20 +32,25 @@ def agregarPelicula(peliculas_lista):
     peliculas_lista.append(nueva_pelicula)
     print(f"Película '{titulo}' agregada.")
 
+# FUNCIÓN RECURSIVA
+def _buscar_pelicula_recursiva(lista, id_buscar):
+    if not lista:
+        return None
+    
+    if lista[0]['ID_Pelicula'] == id_buscar:
+        return lista[0]
+
+    return _buscar_pelicula_recursiva(lista[1:], id_buscar)
+
 def leerPeliculaPorId(peliculas_lista):
     print("Consultar Película por ID:")
     try:
         id_buscar = int(input("Ingrese ID de la Película a Consultar: "))
-    except ValueError:
+    except ValueError: 
         print("Error: El ID debe ser un número entero.")
         return
     
-    pelicula_encontrada = None
-    i = 0
-    while i < len(peliculas_lista) and pelicula_encontrada is None:
-        if peliculas_lista[i]['ID_Pelicula'] == id_buscar:
-            pelicula_encontrada = peliculas_lista[i]
-        i += 1
+    pelicula_encontrada = _buscar_pelicula_recursiva(peliculas_lista, id_buscar)
     
     if pelicula_encontrada:
         print(f"Película Encontrada: ID: {pelicula_encontrada['ID_Pelicula']}, Título: {pelicula_encontrada['Titulo']}, Género: {pelicula_encontrada['Genero']}, Duración: {pelicula_encontrada['Duracion_min']} min, Clasificación: {pelicula_encontrada['Clasificacion']}")
@@ -60,31 +73,34 @@ def actualizarPelicula(peliculas_lista):
     print("Actualizar Película Existente:")
     try:
         id_buscar = int(input("Ingrese ID de la Película a Actualizar: "))
-    except ValueError:
+    except ValueError: 
         print("Error: El ID debe ser un número entero.")
         return
     
-    pelicula_a_actualizar = None
-    i = 0
-    while i < len(peliculas_lista) and pelicula_a_actualizar is None:
-        if peliculas_lista[i]['ID_Pelicula'] == id_buscar:
-            pelicula_a_actualizar = peliculas_lista[i]
-        i += 1
+    pelicula_a_actualizar = _buscar_pelicula_recursiva(peliculas_lista, id_buscar)
 
     if pelicula_a_actualizar:
         print(f"Película Encontrada: {pelicula_a_actualizar['Titulo']}")
         nuevo_titulo = input("Ingrese Nuevo Título (dejar en blanco para no cambiar): ")
         nuevo_genero = input("Ingrese Nuevo Género (dejar en blanco para no cambiar): ")
-        nuevo_duracion = input("Ingrese Nueva Duración en Minutos (dejar en blanco para no cambiar): ")
+        nuevo_duracion_str = input("Ingrese Nueva Duración en Minutos (dejar en blanco para no cambiar): ")
         nuevo_clasificacion = input("Ingrese Nueva Clasificación (dejar en blanco para no cambiar): ")
 
         if nuevo_titulo:
             pelicula_a_actualizar['Titulo'] = nuevo_titulo
         if nuevo_genero:
             pelicula_a_actualizar['Genero'] = nuevo_genero
-        if nuevo_duracion:
-            #falta
-            pelicula_a_actualizar['Duracion_min'] = int(nuevo_duracion)
+        
+        if nuevo_duracion_str:
+            try:
+                nuevo_duracion = int(nuevo_duracion_str)
+                if nuevo_duracion > 0:
+                    pelicula_a_actualizar['Duracion_min'] = nuevo_duracion
+                else:
+                    print("Error: La duración debe ser positiva. No se actualizó la duración.")
+            except ValueError:
+                print("Error: La duración debe ser un número. No se actualizó la duración.")
+
         if nuevo_clasificacion:
             pelicula_a_actualizar['Clasificacion'] = nuevo_clasificacion
 
@@ -96,22 +112,16 @@ def eliminarPelicula(peliculas_lista):
     print("Eliminar Película Existente:")
     try:
         id_buscar = int(input("Ingrese ID de la Película a Eliminar: "))
-    except ValueError:
+    except ValueError: 
         print("Error: El ID debe ser un número entero.")
         return
     
-    indice_a_eliminar = -1
-    i = 0
-    while i < len(peliculas_lista) and indice_a_eliminar == -1:
-        if peliculas_lista[i]['ID_Pelicula'] == id_buscar:
-            indice_a_eliminar = i
-        i += 1
-    
-    if indice_a_eliminar != -1:
-        pelicula = peliculas_lista[indice_a_eliminar]
-        confirmacion = input(f"¿Está seguro que desea eliminar la película '{pelicula['Titulo']}'? (s/n): ").lower()
+    pelicula_a_eliminar = _buscar_pelicula_recursiva(peliculas_lista, id_buscar)
+            
+    if pelicula_a_eliminar:
+        confirmacion = input(f"¿Está seguro que desea eliminar la película '{pelicula_a_eliminar['Titulo']}'? (s/n): ").lower()
         if confirmacion == 's':
-            peliculas_lista.pop(indice_a_eliminar)
+            peliculas_lista.remove(pelicula_a_eliminar) 
             print(f"Película ID {id_buscar} eliminada.")
         else:
             print("Operación cancelada.")
@@ -124,11 +134,7 @@ def obtener_info_basica_pelicula(peliculas_lista, id_buscar):
     Busca una película por su ID y devuelve sus datos principales en una tupla.
     Retorna: (Titulo, Genero, Clasificacion) o None si no la encuentra.
     """
-    pelicula_encontrada = None
-    for p in peliculas_lista:
-        if p['ID_Pelicula'] == id_buscar:
-            pelicula_encontrada = p
-            break
+    pelicula_encontrada = _buscar_pelicula_recursiva(peliculas_lista, id_buscar)
     
     if pelicula_encontrada:
         info = (
@@ -139,18 +145,16 @@ def obtener_info_basica_pelicula(peliculas_lista, id_buscar):
         return info
     else:
         return None
-    
-# SLICING 2 [:n] FALTA PONER EN MENU CON 
-#try:
-#    leerPrimerasNPeliculas(peliculas, cantidad)
-#except ValueError as e:
-#    print(e)
 
-
+# --- SLICING ---
 def leerPrimerasNPeliculas(peliculas_lista, n):
-    if len(peliculas_lista)<n:
+    if n <= 0:
+        raise ValueError("La cantidad debe ser un número positivo.")
+    if len(peliculas_lista) < n:
         raise ValueError("No hay suficientes peliculas para mostrar.")
+    
     print(f"Primeras {n} Peliculas Agregadas:")
-    primeras_n_peliculas = peliculas_lista[:n]
+    # Esta es la línea que usa Slicing
+    primeras_n_peliculas = peliculas_lista[:n] 
     for pelicula in primeras_n_peliculas:
         print(f"ID: {pelicula['ID_Pelicula']}, Título: {pelicula['Titulo']}, Género: {pelicula['Genero']}, Duración: {pelicula['Duracion_min']} min, Clasificación: {pelicula['Clasificacion']}")

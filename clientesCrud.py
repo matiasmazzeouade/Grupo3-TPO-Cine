@@ -46,6 +46,19 @@ def agregarCliente(clientes_lista):
     clientes_lista.append(nuevo_cliente)
     print(f"Cliente '{nombre} {apellido}' agregado.")
 
+# FUNCIÓN RECURSIVA
+def _buscar_cliente_recursiva(lista, id_buscar):
+    """
+    Función auxiliar recursiva para buscar un cliente por ID.
+    """
+    if not lista:
+        return None
+    
+    if lista[0]['ID_Cliente'] == id_buscar:
+        return lista[0]
+    
+    return _buscar_cliente_recursiva(lista[1:], id_buscar)
+
 def leerClientePorId(clientes_lista):
     print("Consultar cliente por ID:")
     try:
@@ -53,14 +66,10 @@ def leerClientePorId(clientes_lista):
     except ValueError:
         print("Error: El ID debe ser un número entero.")
         return
-    cliente_encontrado = ""
-    i = 0
-    while i < len(clientes_lista) and cliente_encontrado is "":
-        if clientes_lista[i]['ID_Cliente'] == id_buscar:
-            cliente_encontrado = clientes_lista[i]
-        i += 1
+
+    cliente_encontrado = _buscar_cliente_recursiva(clientes_lista, id_buscar)
             
-    if cliente_encontrado != "":
+    if cliente_encontrado:
         print(f"Cliente Encontrado: ID: {cliente_encontrado['ID_Cliente']}, Nombre: {cliente_encontrado['Nombre']}, Apellido: {cliente_encontrado['Apellido']}, Email: {cliente_encontrado['Email']}, Teléfono: {cliente_encontrado['Telefono']}")
     else:
         print(f"No se encontró ningún cliente con ID {id_buscar}.")
@@ -91,12 +100,7 @@ def actualizarClientePorId(clientes_lista):
         print("Error: El ID debe ser un número entero.")
         return
     
-    cliente_a_actualizar = None
-    i = 0
-    while i < len(clientes_lista) and cliente_a_actualizar is None:
-        if clientes_lista[i]['ID_Cliente'] == id_buscar:
-            cliente_a_actualizar = clientes_lista[i]
-        i += 1
+    cliente_a_actualizar = _buscar_cliente_recursiva(clientes_lista, id_buscar)
 
     if cliente_a_actualizar:
         print(f"Cliente Encontrado: {cliente_a_actualizar['Nombre']} {cliente_a_actualizar['Apellido']}")
@@ -121,29 +125,18 @@ def eliminarCliente(clientes_lista):
     except ValueError:
         print("Error: El ID debe ser un número entero.")
         return
-    indice_a_eliminar = -1
-    i = 0
-    while i < len(clientes_lista) and indice_a_eliminar == -1:
-        if clientes_lista[i]['ID_Cliente'] == id_buscar:
-            indice_a_eliminar = i
-        i += 1
+        
+    cliente_a_eliminar = _buscar_cliente_recursiva(clientes_lista, id_buscar)
             
-    if indice_a_eliminar != -1:
-        cliente = clientes_lista[indice_a_eliminar]
-        confirmacion = input(f"¿Está seguro que desea eliminar al cliente '{cliente['Nombre']} {cliente['Apellido']}'? (s/n): ").lower()
+    if cliente_a_eliminar:
+        confirmacion = input(f"¿Está seguro que desea eliminar al cliente '{cliente_a_eliminar['Nombre']} {cliente_a_eliminar['Apellido']}'? (s/n): ").lower()
         if confirmacion == 's':
-            clientes_lista.pop(indice_a_eliminar)
+            clientes_lista.remove(cliente_a_eliminar)
             print(f"Cliente ID {id_buscar} eliminado.")
         else:
             print("Eliminación cancelada.")
     else:
         print(f"No se encontró ningún cliente con ID {id_buscar}.")
-
-# SLICING 2 [-2:] FALTA PONER EN MENU CON 
-#try:
-#    leerUltimosDosClientes(clientes        )
-#except ValueError as e:
-#    print(e)
 
 def leerUltimosDosClientes(clientes_lista):
     if len(clientes_lista)<2:
