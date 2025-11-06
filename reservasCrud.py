@@ -117,7 +117,11 @@ def actualizarReserva(reservas_lista, funciones_lista, clientes_lista):
         
         nuevo_id_funcion_str = input("Ingrese Nuevo ID de Función (dejar en blanco para no cambiar): ")
         if nuevo_id_funcion_str:
-            nuevo_id_funcion = int(nuevo_id_funcion_str)
+            try:
+                nuevo_id_funcion = int(nuevo_id_funcion_str)
+            except ValueError:
+                print("Error: El ID debe ser un número entero.")
+                return
             funcion_existe = False
             for f in funciones_lista:
                 if f['ID_Funcion'] == nuevo_id_funcion:
