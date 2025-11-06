@@ -1,0 +1,22 @@
+[
+  {"ID_Cliente": 101, "Nombre": "Ana", "Apellido": "Gomez", "Email": "ana.gomez@email.com", "Telefono": "1122334455", "Edad": 30},
+  {"ID_Cliente": 102, "Nombre": "Carlos", "Apellido": "Ruiz", "Email": "carlos.r@email.com", "Telefono": "1122334456", "Edad": 25},
+  {"ID_Cliente": 103, "Nombre": "Lucia", "Apellido": "Fernandez", "Email": "lucia.f@email.com", "Telefono": "1122334457", "Edad": 45},
+  {"ID_Cliente": 104, "Nombre": "Marcos", "Apellido": "Perez", "Email": "marcos.p@email.com", "Telefono": "1122334458", "Edad": 22},
+  {"ID_Cliente": 105, "Nombre": "Sofia", "Apellido": "Martinez", "Email": "sofia.m@email.com", "Telefono": "1122334459", "Edad": 38},
+  {"ID_Cliente": 106, "Nombre": "Juan", "Apellido": "Lopez", "Email": "juan.lopez@email.com", "Telefono": "1122334460", "Edad": 27},
+  {"ID_Cliente": 107, "Nombre": "Camila", "Apellido": "Torres", "Email": "camila.t@email.com", "Telefono": "1122334461", "Edad": 33},
+  {"ID_Cliente": 108, "Nombre": "Diego", "Apellido": "Romero", "Email": "diego.r@email.com", "Telefono": "1122334462", "Edad": 40},
+  {"ID_Cliente": 109, "Nombre": "Valentina", "Apellido": "Alvarez", "Email": "valen.a@email.com", "Telefono": "1122334463", "Edad": 29},
+  {"ID_Cliente": 110, "Nombre": "Mateo", "Apellido": "Suarez", "Email": "mateo.s@email.com", "Telefono": "1122334464", "Edad": 20},
+  {"ID_Cliente": 111, "Nombre": "Florencia", "Apellido": "Cabrera", "Email": "flor.c@email.com", "Telefono": "1122334465", "Edad": 26},
+  {"ID_Cliente": 112, "Nombre": "Javier", "Apellido": "Mendez", "Email": "javier.m@email.com", "Telefono": "1122334466", "Edad": 36},
+  {"ID_Cliente": 113, "Nombre": "Martina", "Apellido": "Silva", "Email": "martina.s@email.com", "Telefono": "1122334467", "Edad": 31},
+  {"ID_Cliente": 114, "Nombre": "Tomas", "Apellido": "Herrera", "Email": "tomas.h@email.com", "Telefono": "1122334468", "Edad": 23},
+  {"ID_Cliente": 115, "Nombre": "Paula", "Apellido": "Diaz", "Email": "paula.d@email.com", "Telefono": "1122334469", "Edad": 42},
+  {"ID_Cliente": 116, "Nombre": "Agustin", "Apellido": "Ramos", "Email": "agustin.r@email.com", "Telefono": "1122334470", "Edad": 19},
+  {"ID_Cliente": 117, "Nombre": "Julieta", "Apellido": "Morales", "Email": "julieta.m@email.com", "Telefono": "1122334471", "Edad": 28},
+  {"ID_Cliente": 118, "Nombre": "Nicolas", "Apellido": "Vega", "Email": "nicolas.v@email.com", "Telefono": "1122334472", "Edad": 37},
+  {"ID_Cliente": 119, "Nombre": "Laura", "Apellido": "Ortega", "Email": "laura.o@email.com", "Telefono": "1122334473", "Edad": 41},
+  {"ID_Cliente": 120, "Nombre": "Pedro", "Apellido": "Castro", "Email": "pedro.c@email.com", "Telefono": "1122334474", "Edad": 34}
+]

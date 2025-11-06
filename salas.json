@@ -1,0 +1,22 @@
+[
+  {"ID_Sala": 1, "Nombre_Sala": "Sala 1", "Capacidad": 100, "Tipo": "2D"},
+  {"ID_Sala": 2, "Nombre_Sala": "Sala 2", "Capacidad": 80, "Tipo": "3D"},
+  {"ID_Sala": 3, "Nombre_Sala": "Sala 3", "Capacidad": 50, "Tipo": "IMAX"},
+  {"ID_Sala": 4, "Nombre_Sala": "Sala 4", "Capacidad": 120, "Tipo": "4DX"},
+  {"ID_Sala": 5, "Nombre_Sala": "Sala 5", "Capacidad": 150, "Tipo": "2D"},
+  {"ID_Sala": 6, "Nombre_Sala": "Sala 6", "Capacidad": 90, "Tipo": "3D"},
+  {"ID_Sala": 7, "Nombre_Sala": "Sala 7", "Capacidad": 60, "Tipo": "2D"},
+  {"ID_Sala": 8, "Nombre_Sala": "Sala 8", "Capacidad": 200, "Tipo": "IMAX"},
+  {"ID_Sala": 9, "Nombre_Sala": "Sala 9", "Capacidad": 75, "Tipo": "4DX"},
+  {"ID_Sala": 10, "Nombre_Sala": "Sala 10", "Capacidad": 110, "Tipo": "2D"},
+  {"ID_Sala": 11, "Nombre_Sala": "Sala 11", "Capacidad": 95, "Tipo": "3D"},
+  {"ID_Sala": 12, "Nombre_Sala": "Sala 12", "Capacidad": 130, "Tipo": "IMAX"},
+  {"ID_Sala": 13, "Nombre_Sala": "Sala 13", "Capacidad": 55, "Tipo": "2D"},
+  {"ID_Sala": 14, "Nombre_Sala": "Sala 14", "Capacidad": 170, "Tipo": "4DX"},
+  {"ID_Sala": 15, "Nombre_Sala": "Sala 15", "Capacidad": 140, "Tipo": "2D"},
+  {"ID_Sala": 16, "Nombre_Sala": "Sala 16", "Capacidad": 100, "Tipo": "3D"},
+  {"ID_Sala": 17, "Nombre_Sala": "Sala 17", "Capacidad": 80, "Tipo": "IMAX"},
+  {"ID_Sala": 18, "Nombre_Sala": "Sala 18", "Capacidad": 65, "Tipo": "2D"},
+  {"ID_Sala": 19, "Nombre_Sala": "Sala 19", "Capacidad": 190, "Tipo": "4DX"},
+  {"ID_Sala": 20, "Nombre_Sala": "Sala 20", "Capacidad": 125, "Tipo": "2D"}
+]

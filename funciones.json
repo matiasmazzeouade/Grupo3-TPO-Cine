@@ -1,0 +1,22 @@
+[
+  {"ID_Funcion": 501, "ID_Pelicula": 1, "ID_Sala": 2, "Horario": "20:30", "Fecha": "2025-08-15"},
+  {"ID_Funcion": 502, "ID_Pelicula": 3, "ID_Sala": 1, "Horario": "21:00", "Fecha": "2025-08-15"},
+  {"ID_Funcion": 503, "ID_Pelicula": 4, "ID_Sala": 3, "Horario": "18:00", "Fecha": "2025-08-16"},
+  {"ID_Funcion": 504, "ID_Pelicula": 2, "ID_Sala": 2, "Horario": "22:15", "Fecha": "2025-08-16"},
+  {"ID_Funcion": 505, "ID_Pelicula": 5, "ID_Sala": 4, "Horario": "19:45", "Fecha": "2025-08-17"},
+  {"ID_Funcion": 506, "ID_Pelicula": 6, "ID_Sala": 1, "Horario": "20:00", "Fecha": "2025-08-18"},
+  {"ID_Funcion": 507, "ID_Pelicula": 7, "ID_Sala": 3, "Horario": "21:30", "Fecha": "2025-08-18"},
+  {"ID_Funcion": 508, "ID_Pelicula": 8, "ID_Sala": 2, "Horario": "17:00", "Fecha": "2025-08-19"},
+  {"ID_Funcion": 509, "ID_Pelicula": 9, "ID_Sala": 4, "Horario": "22:00", "Fecha": "2025-08-19"},
+  {"ID_Funcion": 510, "ID_Pelicula": 10, "ID_Sala": 1, "Horario": "19:00", "Fecha": "2025-08-20"},
+  {"ID_Funcion": 511, "ID_Pelicula": 11, "ID_Sala": 2, "Horario": "20:15", "Fecha": "2025-08-20"},
+  {"ID_Funcion": 512, "ID_Pelicula": 12, "ID_Sala": 3, "Horario": "18:30", "Fecha": "2025-08-21"},
+  {"ID_Funcion": 513, "ID_Pelicula": 13, "ID_Sala": 4, "Horario": "16:00", "Fecha": "2025-08-21"},
+  {"ID_Funcion": 514, "ID_Pelicula": 14, "ID_Sala": 1, "Horario": "21:45", "Fecha": "2025-08-22"},
+  {"ID_Funcion": 515, "ID_Pelicula": 15, "ID_Sala": 2, "Horario": "22:30", "Fecha": "2025-08-22"},
+  {"ID_Funcion": 516, "ID_Pelicula": 16, "ID_Sala": 3, "Horario": "17:30", "Fecha": "2025-08-23"},
+  {"ID_Funcion": 517, "ID_Pelicula": 17, "ID_Sala": 4, "Horario": "20:45", "Fecha": "2025-08-23"},
+  {"ID_Funcion": 518, "ID_Pelicula": 18, "ID_Sala": 1, "Horario": "19:15", "Fecha": "2025-08-24"},
+  {"ID_Funcion": 519, "ID_Pelicula": 19, "ID_Sala": 2, "Horario": "21:00", "Fecha": "2025-08-24"},
+  {"ID_Funcion": 520, "ID_Pelicula": 20, "ID_Sala": 3, "Horario": "22:45", "Fecha": "2025-08-25"}
+]
