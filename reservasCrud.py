@@ -44,11 +44,23 @@ def agregarReserva(reservas_lista, funciones_lista, clientes_lista):
     asientos_input = input("Ingrese los asientos a reservar (ej: F5, F6): ").replace(" ", "")
     asientos = asientos_input.split(",")
 
-    patron_asiento = r'^[A-Z][0-9]+$'
+    # --- Validación estricta del formato de asientos ---
+    asientos = [a.upper() for a in asientos]  # normalizar
+
+    patron_asiento = r'^[A-Z][1-9][0-9]{0,2}$'  # Letra + número entre 1 y 999 (sin 0 adelante)
+
+    # Ver duplicados dentro de la misma reserva
+    duplicados = {a for a in asientos if asientos.count(a) > 1}
+    if duplicados:
+        print(f"Error: Los asientos {', '.join(duplicados)} están repetidos dentro de la misma reserva.")
+        return
+
+    # Validar formato general
     for asiento in asientos:
         if not re.match(patron_asiento, asiento):
-            print(f"Error: El formato del asiento '{asiento}' no es válido. Use formato Letra+Número (ej: F5).")
+            print(f"Error: El asiento '{asiento}' no es válido. Use formato Letra+Número (ej: F5).")
             return
+
 
     # --- Validar si los asientos ya están reservados para esa función ---
     asientos_ocupados = set()
@@ -106,81 +118,95 @@ def actualizarReserva(reservas_lista, funciones_lista, clientes_lista):
     except ValueError:
         print("Error: El ID debe ser un número entero.")
         return
-    reserva_a_actualizar = None
-    for r in reservas_lista:
-        if r['ID_Reserva'] == id_buscar:
-            reserva_a_actualizar = r
-            break
-    
-    if reserva_a_actualizar:
-        print(f"Reserva Encontrada: ID_Funcion: {reserva_a_actualizar['ID_Funcion']}, ID_Cliente: {reserva_a_actualizar['ID_Cliente']}, Asientos: {reserva_a_actualizar['Asientos']}")
-        
-        nuevo_id_funcion_str = input("Ingrese Nuevo ID de Función (dejar en blanco para no cambiar): ")
-        if nuevo_id_funcion_str:
-            try:
-                nuevo_id_funcion = int(nuevo_id_funcion_str)
-            except ValueError:
-                print("Error: El ID debe ser un número entero.")
-                return
-            funcion_existe = False
-            for f in funciones_lista:
-                if f['ID_Funcion'] == nuevo_id_funcion:
-                    funcion_existe = True
-                    break
-            if not funcion_existe:
-                print(f"No se encontró ninguna función con ID {nuevo_id_funcion}.")
-                return
-            reserva_a_actualizar['ID_Funcion'] = nuevo_id_funcion
 
+    # Buscar reserva
+    reserva_a_actualizar = next((r for r in reservas_lista if r['ID_Reserva'] == id_buscar), None)
+
+    if not reserva_a_actualizar:
+        print(f"No se encontró ninguna reserva con ID {id_buscar}.")
+        return
+
+    print(f"Reserva Encontrada: ID_Funcion: {reserva_a_actualizar['ID_Funcion']}, "
+          f"ID_Cliente: {reserva_a_actualizar['ID_Cliente']}, "
+          f"Asientos: {reserva_a_actualizar['Asientos']}")
+
+    # --- Actualizar ID_Funcion ---
+    nuevo_id_funcion_str = input("Ingrese Nuevo ID de Función (dejar en blanco para no cambiar): ").strip()
+    if nuevo_id_funcion_str:
         try:
-            nuevo_id_cliente_str = input("Ingrese Nuevo ID de Cliente (dejar en blanco para no cambiar): ")
+            nuevo_id_funcion = int(nuevo_id_funcion_str)
         except ValueError:
             print("Error: El ID debe ser un número entero.")
             return
-        if nuevo_id_cliente_str:
-            nuevo_id_cliente = nuevo_id_cliente_str
-            cliente_existe = False
-            for c in clientes_lista:
-                if c['ID_Cliente'] == nuevo_id_cliente:
-                    cliente_existe = True
-                    break
-            if not cliente_existe:
-                print(f"No se encontró ningún cliente con ID {nuevo_id_cliente}.")
-                return
-            reserva_a_actualizar['ID_Cliente'] = nuevo_id_cliente
 
-        asientos_input = input("Ingrese Nuevos Asientos (F5,F6) (dejar en blanco para no cambiar): ").replace(" ", "")
-        asientos = asientos_input.split(",")
-    
-        if asientos:
-            patron_asiento = r'^[A-Z][0-9]+$'
-            for asiento in asientos:
-                if not re.match(patron_asiento, asiento):
-                    print(f"Error: El formato del asiento '{asiento}' no es válido. Use formato Letra+Número (ej: F5).")
-                    return
+        # Validar existencia
+        if not any(f['ID_Funcion'] == nuevo_id_funcion for f in funciones_lista):
+            print(f"No se encontró ninguna función con ID {nuevo_id_funcion}.")
+            return
 
-            # --- Validar si los asientos ya están reservados para esa función ---
-            asientos_ocupados = set()
-            for reserva in reservas_lista:
-                if reserva['ID_Funcion'] == id_buscar:
-                    reservados_previos = reserva['Asientos'].replace(" ", "").split(",")
-                    for a in reservados_previos:
-                        asientos_ocupados.add(a.upper())
+        reserva_a_actualizar['ID_Funcion'] = nuevo_id_funcion
 
-            asientos_conflictivos = []
-            for a in asientos:
-                if a.upper() in asientos_ocupados:
-                    asientos_conflictivos.append(a)
+    funcion_actual = reserva_a_actualizar['ID_Funcion']
 
-            if len(asientos_conflictivos) > 0:
-                print(f"Error: Los asientos {', '.join(asientos_conflictivos)} ya están reservados para esta función.")
-                return
-            reserva_a_actualizar['Asientos'] = asientos_input
+    # --- Actualizar ID_Cliente ---
+    nuevo_id_cliente_str = input("Ingrese Nuevo ID de Cliente (dejar en blanco para no cambiar): ").strip()
+    if nuevo_id_cliente_str:
+        try:
+            nuevo_id_cliente = int(nuevo_id_cliente_str)
+        except ValueError:
+            print("Error: El ID debe ser un número entero.")
+            return
+
+        if not any(c['ID_Cliente'] == nuevo_id_cliente for c in clientes_lista):
+            print(f"No se encontró ningún cliente con ID {nuevo_id_cliente}.")
+            return
+
+        reserva_a_actualizar['ID_Cliente'] = nuevo_id_cliente
+
+    # --- Actualizar Asientos ---
+    asientos_input = input("Ingrese Nuevos Asientos (F5,F6) (dejar en blanco para no cambiar): ").strip()
+
+    if asientos_input:
+        asientos_input = asientos_input.replace(" ", "")
+        asientos = [a.upper() for a in asientos_input.split(",")]
         
-        reserva_a_actualizar['Fecha_Reserva'] = datetime.now().date().isoformat()
-        print(f"Reserva ID {id_buscar} actualizada.")
-    else:
-        print(f"No se encontró ninguna reserva con ID {id_buscar}.")
+        # --- Validación estricta del formato de asientos ---
+        patron_asiento = r'^[A-Z][1-9][0-9]{0,2}$'  # Letra + número 1–999
+        
+        # Ver duplicados dentro de la misma reserva
+        duplicados = {a for a in asientos if asientos.count(a) > 1}
+        if duplicados:
+            print(f"Error: Los asientos {', '.join(duplicados)} están repetidos dentro de la misma reserva.")
+            return
+        
+        # Validar formato general
+        for asiento in asientos:
+            if not re.match(patron_asiento, asiento):
+                print(f"Error: El asiento '{asiento}' no es válido. Use formato Letra+Número (ej: F5).")
+                return
+        
+        
+        # Obtener asientos ocupados EXCLUYENDO esta reserva
+        asientos_ocupados = set()
+        for r in reservas_lista:
+            if r['ID_Funcion'] == funcion_actual and r['ID_Reserva'] != id_buscar:
+                prev = r['Asientos'].replace(" ", "").upper().split(",")
+                asientos_ocupados.update(prev)
+
+        # Validar conflictos reales
+        conflictivos = [a for a in asientos if a in asientos_ocupados]
+
+        if conflictivos:
+            print(f"Error: Los asientos {', '.join(conflictivos)} ya están reservados para esta función.")
+            return
+
+        # Actualizar asientos
+        reserva_a_actualizar['Asientos'] = ", ".join(asientos)
+
+    # Actualizar fecha
+    reserva_a_actualizar['Fecha_Reserva'] = datetime.now().date().isoformat()
+
+    print(f"Reserva ID {id_buscar} actualizada correctamente.")
 
 def eliminarReserva(reservas_lista):
     print("Eliminar Reserva Existente:")
@@ -205,3 +231,27 @@ def eliminarReserva(reservas_lista):
             print("Eliminación cancelada.")
     else:
         print(f"No se encontró ninguna reserva con ID {id_buscar}.")
+
+def menu_reservas(reservas_lista, funciones_lista, clientes_lista):
+    op = ""
+    while op != "x":
+        print("\n--- Gestión de Reservas ---")
+        print("1. Agregar reserva")
+        print("2. Consultar por ID")
+        print("3. Actualizar reserva")
+        print("4. Eliminar reserva")
+        print("x. Volver")
+
+        op = input("Seleccione opción: ").lower()
+
+        if op == "1":
+            agregarReserva(reservas_lista, funciones_lista, clientes_lista)
+
+        elif op == "2":
+            leerReservaPorId(reservas_lista)
+
+        elif op == "3":
+            actualizarReserva(reservas_lista, funciones_lista, clientes_lista)
+
+        elif op == "4":
+            eliminarReserva(reservas_lista)

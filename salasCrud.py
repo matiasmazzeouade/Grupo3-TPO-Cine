@@ -1,3 +1,4 @@
+import re
 #--------------------------------------------------
 # FUNCIONES CRUD PARA SALAS (CON DICCIONARIOS)
 #--------------------------------------------------
@@ -5,11 +6,35 @@
 def agregarSala(salas_lista):
     print("Agregar Nueva Sala:")
     nuevo_id = max([s['ID_Sala'] for s in salas_lista]) + 1 if salas_lista else 1
-    nombre_sala = input("Ingrese Nombre de la Sala (ej: Sala 5): ")
-    #falta
-    capacidad = int(input("Ingrese la Capacidad de la sala: "))
-    tipo = input("Ingrese el Tipo de sala (ej: 2D, 3D, IMAX): ")
-    
+
+    # --- Validar nombre ---
+    nombre_sala = input("Ingrese Nombre de la Sala (ej: Sala 5): ").strip()
+    if not nombre_sala or len(nombre_sala) < 2:
+        print("Error: El nombre de la sala no puede estar vacío y debe tener al menos 2 caracteres.")
+        return
+
+    # --- Validar capacidad ---
+    try:
+        capacidad = int(input("Ingrese la Capacidad de la sala: "))
+        if capacidad <= 0:
+            print("Error: La capacidad debe ser un entero positivo.")
+            return
+    except ValueError:
+        print("Error: La capacidad debe ser un número entero.")
+        return
+
+    # --- Validar tipo ---
+    tipo = input("Ingrese el Tipo de sala (ej: 2D, 3D, IMAX): ").strip().upper()
+    if not tipo:
+        print("Error: El tipo de sala no puede estar vacío.")
+        return
+
+    # Reglas opcionales de formato
+    patron_tipo = r'^[A-Z0-9]{2,6}$'  # 2D, 3D, IMAX, XD, VIP, etc.
+    if not re.match(patron_tipo, tipo):
+        print("Error: El tipo de sala debe ser corto y alfanumérico (ej: 2D, 3D, IMAX, XD).")
+        return
+
     nueva_sala = {
         'ID_Sala': nuevo_id,
         'Nombre_Sala': nombre_sala,
@@ -17,12 +42,15 @@ def agregarSala(salas_lista):
         'Tipo': tipo
     }
     salas_lista.append(nueva_sala)
-    print(f"Sala '{nombre_sala}' agregada.")
+    print(f"Sala '{nombre_sala}' agregada correctamente.")
 
 def leerSalaPorId(salas_lista):
     print("Consultar Sala por ID:")
-    #falta
-    id_buscar = int(input("Ingrese ID de la Sala a Consultar: "))
+    try:
+        id_buscar = int(input("Ingrese ID de la Sala a Consultar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     sala_encontrada = None
     for s in salas_lista:
@@ -37,8 +65,11 @@ def leerSalaPorId(salas_lista):
 
 def actualizarSala(salas_lista):
     print("Actualizar Sala Existente:")
-    #falta
-    id_buscar = int(input("Ingrese ID de la Sala a Actualizar: "))
+    try:   
+        id_buscar = int(input("Ingrese ID de la Sala a Actualizar: "))
+    except ValueError:
+        print("Error: El ID debe ser un número entero.")
+        return
     
     sala_a_actualizar = None
     for s in salas_lista:
@@ -46,50 +77,91 @@ def actualizarSala(salas_lista):
             sala_a_actualizar = s
             break
 
-    if sala_a_actualizar:
-        print(f"Sala Encontrada: {sala_a_actualizar['Nombre_Sala']}")
-        nuevo_nombre = input("Ingrese Nuevo Nombre (dejar en blanco para no cambiar): ")
-        nueva_capacidad = input("Ingrese Nueva Capacidad (dejar en blanco para no cambiar): ")
-        nuevo_tipo = input("Ingrese Nuevo Tipo (dejar en blanco para no cambiar): ")
-        
-        if nuevo_nombre: sala_a_actualizar['Nombre_Sala'] = nuevo_nombre
-        #falta
-        if nueva_capacidad: sala_a_actualizar['Capacidad'] = int(nueva_capacidad)
-        if nuevo_tipo: sala_a_actualizar['Tipo'] = nuevo_tipo
-            
-        print(f"Sala ID {id_buscar} actualizada.")
-    else:
+    if not sala_a_actualizar:
         print(f"No se encontró ninguna sala con ID {id_buscar}.")
-
-def eliminarSala(salas_lista, funciones_lista):
-    print("Eliminar Sala Existente:")
-    #falta
-    id_buscar = int(input("Ingrese ID de la Sala a Eliminar: "))
-    
-    sala_en_uso = False
-    for funcion in funciones_lista:
-        if funcion['ID_Sala'] == id_buscar:
-            sala_en_uso = True
-            break
-    
-    if sala_en_uso:
-        print(f"La sala ID {id_buscar} está asignada a una o más funciones. No se puede eliminar.")
         return
 
-    indice_a_eliminar = -1
-    i = 0
-    while i < len(salas_lista) and indice_a_eliminar == -1:
-        if salas_lista[i]['ID_Sala'] == id_buscar:
-            indice_a_eliminar = i
-        i += 1
+    print(f"Sala Encontrada: {sala_a_actualizar['Nombre_Sala']}")
 
-    if indice_a_eliminar != -1:
-        sala = salas_lista[indice_a_eliminar]
-        confirmacion = input(f"¿Está seguro que desea eliminar la sala '{sala['Nombre_Sala']}'? (s/n): ").lower()
-        if confirmacion == 's':
-            salas_lista.pop(indice_a_eliminar)
-            print(f"Sala ID {id_buscar} eliminada.")
-        else:
-            print("Eliminación cancelada.")
-    else:
-        print(f"No se encontró ninguna sala con ID {id_buscar}.")
+    nuevo_nombre = input("Ingrese Nuevo Nombre (dejar en blanco para no cambiar): ").strip()
+    nueva_capacidad_str = input("Ingrese Nueva Capacidad (dejar en blanco para no cambiar): ").strip()
+    nuevo_tipo = input("Ingrese Nuevo Tipo (dejar en blanco para no cambiar): ").strip().upper()
+
+    # --- Validar y actualizar nombre ---
+    if nuevo_nombre:
+        if len(nuevo_nombre) < 2:
+            print("Error: El nombre debe tener al menos 2 caracteres.")
+            return
+        sala_a_actualizar['Nombre_Sala'] = nuevo_nombre
+
+    # --- Validar y actualizar capacidad ---
+    if nueva_capacidad_str:
+        try:
+            nueva_capacidad = int(nueva_capacidad_str)
+            if nueva_capacidad <= 0:
+                print("Error: La capacidad debe ser un entero positivo. No se actualizó la capacidad.")
+            else:
+                sala_a_actualizar['Capacidad'] = nueva_capacidad
+        except ValueError:
+            print("Error: La capacidad debe ser un número entero.")
+            return
+
+    # --- Validar y actualizar tipo ---
+    if nuevo_tipo:
+        patron_tipo = r'^[A-Z0-9]{2,6}$'
+        if not re.match(patron_tipo, nuevo_tipo):
+            print("Error: El tipo debe ser corto y alfanumérico (ej: 2D, 3D, IMAX, XD).")
+            return
+        sala_a_actualizar['Tipo'] = nuevo_tipo
+
+    print(f"Sala ID {id_buscar} actualizada correctamente.")
+
+def eliminarSala(salas_lista, funciones_lista, reservas_lista):
+    print("Eliminar Sala:")
+    try:
+        id_buscar = int(input("ID de sala: "))
+    except ValueError:
+        print("ID inválido.")
+        return
+
+    sala = next((s for s in salas_lista if s['ID_Sala'] == id_buscar), None)
+    if not sala:
+        print("Sala no encontrada.")
+        return
+
+    funciones_asociadas = [f['ID_Funcion'] for f in funciones_lista if f['ID_Sala'] == id_buscar]
+
+    confirm = input("¿Eliminar sala + funciones + reservas? (s/n): ").lower()
+    if confirm != "s":
+        print("Cancelado.")
+        return
+
+    reservas_lista[:] = [r for r in reservas_lista if r['ID_Funcion'] not in funciones_asociadas]
+    funciones_lista[:] = [f for f in funciones_lista if f['ID_Sala'] != id_buscar]
+    salas_lista.remove(sala)
+
+    print("Sala y dependencias eliminadas.")
+
+def menu_salas(salas_lista, funciones_lista, reservas_lista):
+    op = ""
+    while op != "x":
+        print("\n--- Gestión de Salas ---")
+        print("1. Agregar")
+        print("2. Consultar por ID")
+        print("3. Actualizar")
+        print("4. Eliminar (cascada)")
+        print("x. Volver")
+
+        op = input("Seleccione: ").lower()
+
+        if op == "1":
+            agregarSala(salas_lista)
+
+        elif op == "2":
+            leerSalaPorId(salas_lista)
+
+        elif op == "3":
+            actualizarSala(salas_lista)
+
+        elif op == "4":
+            eliminarSala(salas_lista, funciones_lista, reservas_lista)
