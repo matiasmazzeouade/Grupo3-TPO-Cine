@@ -124,23 +124,31 @@ def eliminarSala(salas_lista, funciones_lista, reservas_lista):
         print("ID inválido.")
         return
 
+    # Buscar sala
     sala = next((s for s in salas_lista if s['ID_Sala'] == id_buscar), None)
     if not sala:
         print("Sala no encontrada.")
         return
 
+    # Buscar funciones asociadas
     funciones_asociadas = [f['ID_Funcion'] for f in funciones_lista if f['ID_Sala'] == id_buscar]
 
-    confirm = input("¿Eliminar sala + funciones + reservas? (s/n): ").lower()
+    # Si tiene funciones → NO SE PUEDE ELIMINAR
+    if funciones_asociadas:
+        print("La sala tiene funciones asignadas y no se puede eliminar.")
+        return
+
+    # Si no tiene funciones → pedir confirmación
+    confirm = input("¿Eliminar sala? (s/n): ").lower()
     if confirm != "s":
         print("Cancelado.")
         return
 
-    reservas_lista[:] = [r for r in reservas_lista if r['ID_Funcion'] not in funciones_asociadas]
-    funciones_lista[:] = [f for f in funciones_lista if f['ID_Sala'] != id_buscar]
+    # Eliminar sala
     salas_lista.remove(sala)
 
-    print("Sala y dependencias eliminadas.")
+    print("Sala eliminada correctamente.")
+
 
 def menu_salas(salas_lista, funciones_lista, reservas_lista):
     op = ""

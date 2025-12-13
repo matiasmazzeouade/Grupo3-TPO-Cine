@@ -1,138 +1,90 @@
-# Lopéz Facundo
+#Mazzeo Matías
 
+# test_reservas.py
 import pytest
-import salasCrud  # Importa tu módulo con las funciones CRUD
+from datetime import date
+from reservasCrud import (
+    agregarReserva,
+    leerReservaPorId,
+    eliminarReserva
+)
 
-# --- DATOS DE PRUEBA ---
-salas_lista = [
-    {'ID_Sala': 1, 'Nombre_Sala': 'Sala 1', 'Capacidad': 100, 'Tipo': '2D'},
-    {'ID_Sala': 2, 'Nombre_Sala': 'Sala 2', 'Capacidad': 200, 'Tipo': '3D'}
-]
+# ------------------------------------------------------------
+# TEST 1 — leerReservaPorId (reserva existente)
+# ------------------------------------------------------------
+def test_leer_reserva_por_id_encontrada(monkeypatch, capsys):
+    reservas = [
+        {
+            'ID_Reserva': 1001,
+            'ID_Funcion': 10,
+            'ID_Cliente': 1,
+            'Asientos': 'F5',
+            'Fecha_Reserva': '2024-11-10'
+        }
+    ]
 
-funciones_lista = [
-    {'ID_Funcion': 1, 'ID_Sala': 2}
-]
+    # Simula input del usuario
+    monkeypatch.setattr('builtins.input', lambda _: "1001")
 
+    leerReservaPorId(reservas)
+    captured = capsys.readouterr().out
 
-# --------------------------------------------------
-# Test: agregarSala
-# --------------------------------------------------
-def test_agregar_sala(monkeypatch, capsys):
-    """
-    Prueba que agregarSala agregue una nueva sala correctamente.
-    """
-    entradas = iter(["Sala 3", "150", "IMAX"])
-    monkeypatch.setattr('builtins.input', lambda _: next(entradas))
-    
-    salas = salas_lista.copy()
-    salasCrud.agregarSala(salas)
-
-    out = capsys.readouterr().out
-
-    # ✅ Coincide con tu mensaje real:
-    # "Sala 'Sala 3' agregada correctamente."
-    assert "agregada correctamente" in out
-    assert len(salas) == 3
-    assert salas[-1]['Nombre_Sala'] == "Sala 3"
-    assert salas[-1]['Capacidad'] == 150
-    assert salas[-1]['Tipo'] == "IMAX"
+    assert "Consultar Reserva por ID" in captured
+    assert "Reserva Encontrada" in captured
+    assert "1001" in captured
+    assert "10" in captured
+    assert "1" in captured
+    assert "F5" in captured
 
 
-# --------------------------------------------------
-# Test: leerSalaPorId
-# --------------------------------------------------
-def test_leer_sala_existente(monkeypatch, capsys):
-    monkeypatch.setattr('builtins.input', lambda _: "1")
-    salasCrud.leerSalaPorId(salas_lista)
-    out = capsys.readouterr().out
-    assert "Sala Encontrada" in out
+# ------------------------------------------------------------
+# TEST 2 — eliminarReserva (confirmación = 's')
+# ------------------------------------------------------------
+def test_eliminar_reserva_confirmada(monkeypatch, capsys):
+    reservas = [
+        {'ID_Reserva': 1001, 'ID_Funcion': 10, 'ID_Cliente': 1, 'Asientos': 'F5', 'Fecha_Reserva': '2024-11-10'},
+        {'ID_Reserva': 1002, 'ID_Funcion': 11, 'ID_Cliente': 2, 'Asientos': 'F6', 'Fecha_Reserva': '2024-11-11'}
+    ]
+
+    # Secuencia de inputs: ID que se elimina -> confirmación
+    inputs = iter(["1001", "s"])
+    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
+
+    eliminarReserva(reservas)
+    captured = capsys.readouterr().out
+
+    # Validaciones
+    assert len(reservas) == 1
+    assert reservas[0]['ID_Reserva'] == 1002
+    assert "eliminada" in captured.lower()
 
 
-def test_leer_sala_inexistente(monkeypatch, capsys):
-    monkeypatch.setattr('builtins.input', lambda _: "10")
-    salasCrud.leerSalaPorId(salas_lista)
-    out = capsys.readouterr().out
-    assert "No se encontró" in out
-
-
-# --------------------------------------------------
-# Test: actualizarSala
-# --------------------------------------------------
-def test_actualizar_sala(monkeypatch, capsys):
-    """
-    Prueba que actualizarSala modifique los datos correctamente.
-    """
-    entradas = iter(["1", "Sala Renovada", "120", "4D"])
-    monkeypatch.setattr('builtins.input', lambda _: next(entradas))
-    
-    salas = salas_lista.copy()
-    salasCrud.actualizarSala(salas)
-    out = capsys.readouterr().out
-
-    assert "actualizada" in out
-    assert salas[0]['Nombre_Sala'] == "Sala Renovada"
-    assert salas[0]['Capacidad'] == 120
-    assert salas[0]['Tipo'] == "4D"
-
-
-def test_actualizar_sala_inexistente(monkeypatch, capsys):
-    monkeypatch.setattr('builtins.input', lambda _: "99")
-    salasCrud.actualizarSala(salas_lista)
-    out = capsys.readouterr().out
-    assert "No se encontró" in out
-
-
-# --------------------------------------------------
-# Test: eliminarSala
-# --------------------------------------------------
-def test_eliminar_sala_confirmada(monkeypatch, capsys):
-    """
-    Prueba que se elimine una sala correctamente cuando el usuario confirma.
-    """
-    entradas = iter(["1", "s"])
-    monkeypatch.setattr('builtins.input', lambda _: next(entradas))
-    
-    salas = salas_lista.copy()
-    funciones = []
+# ------------------------------------------------------------
+# TEST 3 — agregarReserva (caso correcto)
+# ------------------------------------------------------------
+def test_agregar_reserva_correcta(monkeypatch, capsys):
     reservas = []
-    salasCrud.eliminarSala(salas, funciones, reservas)
+    funciones = [{'ID_Funcion': 10}]
+    clientes = [{'ID_Cliente': 1}]
 
-    out = capsys.readouterr().out
+    # Secuencia: ID Función -> ID Cliente -> Asiento
+    inputs = iter(["10", "1", "F5"])
+    monkeypatch.setattr('builtins.input', lambda _: next(inputs))
 
-    assert "eliminada" in out.lower()
-    assert len(salas) == 1
+    agregarReserva(reservas, funciones, clientes)
+    captured = capsys.readouterr().out
 
+    # La reserva se agregó
+    assert "agregada correctamente" in captured
+    assert len(reservas) == 1
 
-def test_eliminar_sala_cancelada(monkeypatch, capsys):
-    entradas = iter(["1", "n"])
-    monkeypatch.setattr('builtins.input', lambda _: next(entradas))
-    
-    salas = salas_lista.copy()
-    funciones = []
-    reservas = []
-    salasCrud.eliminarSala(salas, funciones, reservas)
+    nueva = reservas[0]
 
-    out = capsys.readouterr().out
+    # Verificaciones de los datos agregados
+    assert nueva['ID_Reserva'] == 1001
+    assert nueva['ID_Funcion'] == 10
+    assert nueva['ID_Cliente'] == 1
+    assert nueva['Asientos'] == "F5"
 
-    assert "cancelado" in out.lower()
-    assert len(salas) == 2
-
-
-def test_eliminar_sala_en_uso(monkeypatch, capsys):
-    """
-    Prueba la eliminación de una sala que tiene funciones asociadas.
-    Tu CRUD SÍ permite eliminar en cascada, así que no esperamos error.
-    """
-    entradas = iter(["2", "s"])
-    monkeypatch.setattr('builtins.input', lambda _: next(entradas))
-
-    salas = salas_lista.copy()
-    funciones = funciones_lista.copy()
-    reservas = []
-
-    salasCrud.eliminarSala(salas, funciones, reservas)
-
-    out = capsys.readouterr().out
-
-    # ✅ Como tu código elimina en cascada, solo verificamos que diga "eliminada"
-    assert "eliminada" in out.lower()
+    # Fecha actual
+    assert nueva['Fecha_Reserva'] == date.today().isoformat()
