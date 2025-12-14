@@ -2,15 +2,17 @@ import peliculasCrud, clientesCrud, funcionesCrud, reservasCrud, salasCrud, func
 import premiosCrud     # ✅ NUEVO MÓDULO
 import json
 
-# Archivos JSON
+# -----------------------------
+# ARCHIVOS
+# -----------------------------
 PELICULAS_FILE = 'peliculas.json'
 CLIENTES_FILE = 'clientes.json'
 FUNCIONES_FILE = 'funciones.json'
 SALAS_FILE = 'salas.json'
-RESERVAS_FILE = 'reservas.json'
+RESERVAS_FILE = 'reservas.txt'   # ✅ TXT
 
 # -----------------------------
-# CARGA Y GUARDADO DE DATOS
+# CARGA Y GUARDADO JSON
 # -----------------------------
 def cargar_datos(archivo):
     try:
@@ -25,6 +27,50 @@ def guardar_datos(archivo, datos):
             json.dump(datos, f, ensure_ascii=False, indent=4)
     except Exception as e:
         print(f"Error guardando '{archivo}': {e}")
+
+# -----------------------------
+# CARGA Y GUARDADO TXT (RESERVAS)
+# -----------------------------
+def cargar_reservas_txt():
+    reservas = []
+
+    try:
+        with open(RESERVAS_FILE, "r", encoding="UTF-8") as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+
+                if linea == "":
+                    continue
+
+                datos = linea.split(";")
+
+                reserva = {
+                    "ID_Reserva": int(datos[0]),
+                    "ID_Funcion": int(datos[1]),
+                    "ID_Cliente": int(datos[2]),
+                    "Asientos": datos[3],
+                    "Fecha_Reserva": datos[4]
+                }
+
+                reservas.append(reserva)
+
+    except FileNotFoundError:
+        reservas = []
+
+    return reservas
+
+
+def guardar_reservas_txt(reservas):
+    with open(RESERVAS_FILE, "w", encoding="UTF-8") as archivo:
+        for r in reservas:
+            linea = (
+                f"{r['ID_Reserva']};"
+                f"{r['ID_Funcion']};"
+                f"{r['ID_Cliente']};"
+                f"{r['Asientos']};"
+                f"{r['Fecha_Reserva']}\n"
+            )
+            archivo.write(linea)
 
 # -----------------------------
 # IMPRIMIR TODAS LAS LISTAS
@@ -58,7 +104,7 @@ def imprimirMenu():
         print("5. Salas")
         print("6. Reservas")
         print("7. Estadísticas")
-        print("8. Premios (lista de listas)")   # ✅ NUEVO
+        print("8. Premios (lista de listas)")
         print("-1. Salir")
 
         try:
@@ -71,7 +117,7 @@ def imprimirMenu():
             imprimirListas()
 
         # -------------------------
-        # PELÍCULAS (con cascada)
+        # PELÍCULAS
         # -------------------------
         elif op == 2:
             peliculasCrud.menu_peliculas(
@@ -81,10 +127,10 @@ def imprimirMenu():
             )
             guardar_datos(PELICULAS_FILE, peliculas_lista)
             guardar_datos(FUNCIONES_FILE, funciones_lista)
-            guardar_datos(RESERVAS_FILE, reservas_lista)
+            guardar_reservas_txt(reservas_lista)
 
         # -------------------------
-        # CLIENTES (con cascada)
+        # CLIENTES
         # -------------------------
         elif op == 3:
             clientesCrud.menu_clientes(
@@ -92,10 +138,10 @@ def imprimirMenu():
                 reservas_lista
             )
             guardar_datos(CLIENTES_FILE, clientes_lista)
-            guardar_datos(RESERVAS_FILE, reservas_lista)
+            guardar_reservas_txt(reservas_lista)
 
         # -------------------------
-        # FUNCIONES (con cascada)
+        # FUNCIONES
         # -------------------------
         elif op == 4:
             funcionesCrud.menu_funciones(
@@ -105,10 +151,10 @@ def imprimirMenu():
                 reservas_lista
             )
             guardar_datos(FUNCIONES_FILE, funciones_lista)
-            guardar_datos(RESERVAS_FILE, reservas_lista)
+            guardar_reservas_txt(reservas_lista)
 
         # -------------------------
-        # SALAS (con cascada)
+        # SALAS
         # -------------------------
         elif op == 5:
             salasCrud.menu_salas(
@@ -118,10 +164,10 @@ def imprimirMenu():
             )
             guardar_datos(SALAS_FILE, salas_lista)
             guardar_datos(FUNCIONES_FILE, funciones_lista)
-            guardar_datos(RESERVAS_FILE, reservas_lista)
+            guardar_reservas_txt(reservas_lista)
 
         # -------------------------
-        # RESERVAS (sin cascada)
+        # RESERVAS
         # -------------------------
         elif op == 6:
             reservasCrud.menu_reservas(
@@ -129,7 +175,7 @@ def imprimirMenu():
                 funciones_lista,
                 clientes_lista
             )
-            guardar_datos(RESERVAS_FILE, reservas_lista)
+            guardar_reservas_txt(reservas_lista)
 
         # -------------------------
         # ESTADÍSTICAS
@@ -144,7 +190,7 @@ def imprimirMenu():
             )
 
         # -------------------------
-        # PREMIOS (lista de listas)
+        # PREMIOS
         # -------------------------
         elif op == 8:
             premiosCrud.menu_premios(premios_lista)
@@ -158,12 +204,12 @@ def imprimirMenu():
 peliculas_lista = cargar_datos(PELICULAS_FILE)
 clientes_lista = cargar_datos(CLIENTES_FILE)
 funciones_lista = cargar_datos(FUNCIONES_FILE)
-reservas_lista = cargar_datos(RESERVAS_FILE)
 salas_lista = cargar_datos(SALAS_FILE)
+reservas_lista = cargar_reservas_txt()   # ✅ TXT
 
-# ------------------------------------------
-# LISTA DE PREMIOS (LISTA DE LISTAS)
-# ------------------------------------------
+# -----------------------------
+# LISTA DE PREMIOS
+# -----------------------------
 premios_lista = [
     [1, "Premio a la Mejor Sala 3D", 2023],
     [2, "Cliente del Año", 2024],
